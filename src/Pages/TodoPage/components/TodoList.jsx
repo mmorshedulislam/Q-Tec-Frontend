@@ -19,7 +19,7 @@ const TodoList = ({
 }) => {
   return (
     <>
-      <CardBody className="overflow-scroll px-0">
+      <CardBody className="overflow-auto px-0">
         <table className="w-full min-w-max table-auto text-left">
           <thead>
             <tr>
@@ -81,7 +81,7 @@ const TodoList = ({
                         variant="ghost"
                         size="sm"
                         value={status}
-                        color={status === "completed" ? "green" : "blue-gray"}
+                        color={status === "completed" ? "green" : "red"}
                       />
                     </div>
                   </td>
@@ -93,9 +93,9 @@ const TodoList = ({
                         value={priority}
                         color={
                           priority === "low"
-                            ? "green"
+                            ? "yellow"
                             : priority === "medium"
-                            ? "deep-orange"
+                            ? "teal"
                             : "blue-gray"
                         }
                       />
@@ -130,8 +130,10 @@ const TodoList = ({
                       <Chip
                         variant="ghost"
                         size="sm"
-                        value={`Mark as ${status}`}
-                        color={status === "completed" ? "green" : "blue-gray"}
+                        value={`Mark as ${
+                          status === "completed" ? "incomplete" : "completed"
+                        }`}
+                        color={status === "completed" ? "red" : "green"}
                       />
                     </div>
                   </td>

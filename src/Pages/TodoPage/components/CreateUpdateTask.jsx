@@ -26,16 +26,9 @@ const CreateUpdateTask = ({ handleAddEdit, task }) => {
           label="Title"
           {...register("title")}
         />
-        {/* <select name="priority">
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select> */}
-
         <Controller
           name="priority"
           control={control}
-          defaultValue="" // Set a default value if needed
           render={({ field }) => (
             <Select {...field} variant="outlined" label="Priority">
               <Option value="low">Low</Option>
@@ -46,7 +39,7 @@ const CreateUpdateTask = ({ handleAddEdit, task }) => {
         />
 
         <Button type="submit" fullWidth>
-          Add Task
+          {task?.id ? "Update" : "Add"} Task
         </Button>
       </form>
     </div>
