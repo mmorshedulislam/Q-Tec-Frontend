@@ -7,29 +7,15 @@ import CreateUpdateTask from "./components/CreateUpdateTask";
 import TodoList from "./components/TodoList";
 
 const TodoPage = () => {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Task 1 Lorem ipsum dolor sit amet.",
-      status: "completed",
-      priority: "medium",
-    },
-  ]);
+  // is already tasks in local storage
+  const isTasks = JSON.parse(localStorage.getItem("tasks"));
+  const [tasks, setTasks] = useState(isTasks);
 
   const [selectedTask, setSelectedTask] = useState(null);
   const [isAddNewOpen, setIsAddNewOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   const TABLE_HEAD = ["ID", "Task", "Status", "Priority", "Actions", "Mark"];
-
-  //   get tasks
-  useEffect(() => {
-    const isTasks = JSON.parse(localStorage.getItem("tasks"));
-
-    if (isTasks) {
-      setTasks(isTasks);
-    }
-  }, []);
 
   //   set tasks
   useEffect(() => {
@@ -44,7 +30,7 @@ const TodoPage = () => {
   // handle add and update
   const handleAddEdit = (data) => {
     if (selectedTask) {
-      // Update existing task
+      // Update task
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
           task.id === selectedTask.id
@@ -55,15 +41,19 @@ const TodoPage = () => {
       setSelectedTask(null);
       setIsEditOpen(false);
     } else {
-      // Add new task
+      // Add task
       const newTask = {
         id: tasks.length + 1,
         title: data.title,
         status: "incomplete",
         priority: data.priority,
       };
-      setTasks((prevTasks) => [...prevTasks, newTask]);
-      setIsAddNewOpen(false);
+      if (!data?.title || !data?.priority) {
+        alert("Please add Title and Priority");
+      } else {
+        setTasks((prevTasks) => [...prevTasks, newTask]);
+        setIsAddNewOpen(false);
+      }
     }
   };
 
