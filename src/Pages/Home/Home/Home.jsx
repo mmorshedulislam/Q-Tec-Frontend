@@ -1,9 +1,7 @@
-import TodoList from "../../../components/Todo/TodoList";
-
 const Home = () => {
   return (
     <div>
-      <TodoList />
+     <h2>Home</h2>
     </div>
   );
 };
