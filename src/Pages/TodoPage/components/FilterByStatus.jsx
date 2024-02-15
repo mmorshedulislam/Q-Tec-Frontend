@@ -1,9 +1,19 @@
-import { func } from "prop-types";
+import { array, func } from "prop-types";
 
-const FilterByStatus = ({ handleFilterStatus }) => {
+const FilterByStatus = ({ setFilteredTasks, tasks }) => {
+  // filter with status
+  const handleFilterStatus = (e) => {
+    const status = e.target.value;
+    setFilteredTasks(tasks.filter((task) => task.status === status));
+  };
+
   return (
     <>
-      <select name="priority" onChange={handleFilterStatus}>
+      <select
+        className="border border-gray-500 p-1.5 rounded-md"
+        name="priority"
+        onChange={handleFilterStatus}
+      >
         <option value="completed">Completed</option>
         <option value="incomplete">Incomplete</option>
       </select>
@@ -12,7 +22,8 @@ const FilterByStatus = ({ handleFilterStatus }) => {
 };
 
 FilterByStatus.propTypes = {
-  handleFilterStatus: func,
+  setFilteredTasks: func,
+  tasks: array,
 };
 
 export default FilterByStatus;

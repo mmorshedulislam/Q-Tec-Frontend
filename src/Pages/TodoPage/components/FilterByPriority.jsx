@@ -1,9 +1,19 @@
-import { func } from "prop-types";
+import { array, func } from "prop-types";
 
-const FilterByPriority = ({ handleFilterPriority }) => {
+const FilterByPriority = ({ setFilteredTasks, tasks }) => {
+  // filter with priority
+  const handleFilterPriority = (e) => {
+    const priority = e.target.value;
+    setFilteredTasks(tasks.filter((task) => task.priority === priority));
+  };
+
   return (
     <>
-      <select name="priority" onChange={handleFilterPriority}>
+      <select
+        className="border border-gray-500 p-1.5 rounded-md"
+        name="priority"
+        onChange={handleFilterPriority}
+      >
         <option value="low">Low</option>
         <option value="medium">Medium</option>
         <option value="high">High</option>
@@ -13,7 +23,8 @@ const FilterByPriority = ({ handleFilterPriority }) => {
 };
 
 FilterByPriority.propTypes = {
-  handleFilterPriority: func,
+  setFilteredTasks: func,
+  tasks: array,
 };
 
 export default FilterByPriority;

@@ -10,20 +10,37 @@ import {
 } from "@material-tailwind/react";
 
 const TodoList = ({
-  TABLE_HEAD,
+  columns,
   tasks,
-  setTask,
+  setTasks,
+  setSelectedTask,
   setIsEditOpen,
-  handleStatus,
+  // handleStatus,
   handleDelete,
 }) => {
+  // handle mark as complete
+  const handleStatus = (id) => {
+    setTasks(
+      tasks.filter((task) => {
+        if (task.id === id) {
+          if (task.status === "completed") {
+            task.status = "incomplete";
+          } else {
+            task.status = "completed";
+          }
+        }
+        return task;
+      })
+    );
+  };
+
   return (
     <>
       <CardBody className="overflow-auto px-0">
         <table className="w-full min-w-max table-auto text-left">
           <thead>
             <tr>
-              {TABLE_HEAD?.map((head) => (
+              {columns?.map((head) => (
                 <th
                   key={head}
                   className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
@@ -106,7 +123,7 @@ const TodoList = ({
                       <IconButton
                         onClick={() => {
                           setIsEditOpen(true);
-                          setTask(task);
+                          setSelectedTask(task);
                         }}
                         variant="text"
                       >
@@ -148,10 +165,10 @@ const TodoList = ({
 };
 
 TodoList.propTypes = {
-  TABLE_HEAD: array,
+  columns: array,
   tasks: array,
   setTasks: func,
-  setTask: func,
+  setSelectedTask: func,
   setIsEditOpen: func,
   handleStatus: func,
   handleDelete: func,

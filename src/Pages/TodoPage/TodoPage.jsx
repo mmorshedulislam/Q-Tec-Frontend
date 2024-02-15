@@ -8,26 +8,21 @@ import FilterByPriority from "./components/FilterByPriority";
 
 const TodoPage = () => {
   // is already tasks in local storage
-  const isTasks = JSON.parse(localStorage.getItem("tasks"));
-  const [tasks, setTasks] = useState(isTasks);
+  const isExistTasks = JSON.parse(localStorage.getItem("tasks"));
+  const [tasks, setTasks] = useState(isExistTasks);
   const [filteredTasks, setFilteredTasks] = useState([]);
 
   const [selectedTask, setSelectedTask] = useState(null);
   const [isAddNewOpen, setIsAddNewOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const TABLE_HEAD = ["ID", "Task", "Status", "Priority", "Actions", "Mark As"];
+  const columns = ["ID", "Task", "Status", "Priority", "Actions", "Mark As"];
 
   //   set tasks
   useEffect(() => {
     setFilteredTasks(tasks);
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
-
-  // handle task delete
-  const handleDelete = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
-  };
 
   // handle add and update
   const handleAddEdit = (data) => {
@@ -51,7 +46,7 @@ const TodoPage = () => {
         priority: data.priority,
       };
       if (!data?.title || !data?.priority) {
-        alert("Please add Title and Priority");
+        alert("Please Write Title and Select Priority");
       } else {
         setTasks((prevTasks) => [...prevTasks, newTask]);
         setIsAddNewOpen(false);
@@ -59,38 +54,19 @@ const TodoPage = () => {
     }
   };
 
-  // handle mark as complete
-  const handleStatus = (id) => {
-    setTasks(
-      tasks.filter((task) => {
-        if (task.id === id) {
-          if (task.status === "completed") {
-            task.status = "incomplete";
-          } else {
-            task.status = "completed";
-          }
-        }
-        return task;
-      })
-    );
+  // handle task delete
+  const handleDelete = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id));
   };
 
-  // filter with priority
-  const handleFilterPriority = (e) => {
-    const priority = e.target.value;
-    setFilteredTasks(tasks.filter((task) => task.priority === priority));
-  };
-
-  // filter with status
-  const handleFilterStatus = (e) => {
-    const status = e.target.value;
-    setFilteredTasks(tasks.filter((task) => task.status === status));
-  };
-
+  // total completed tasks
   const completedTasks = tasks?.filter((task) => task.status === "completed");
 
+  // total completed tasks
+  const incompleteTasks = tasks?.filter((task) => task.status === "incomplete");
+
   return (
-    <div className="md:w-4/5 mx-auto p-2">
+    <div className="md:w-4/5 mx-auto p-2 border rounded-md my-5 shadow-md">
       <div>
         <div className="flex justify-between items-center my-5">
           <h2 className="font-semibold text-lg">Todo List ({tasks?.length})</h2>
@@ -102,14 +78,20 @@ const TodoPage = () => {
             <span className="md:block">Add New Task</span>
           </button>
         </div>
-        <div className="flex justify-between">
-          <FilterByStatus handleFilterStatus={handleFilterStatus} />
+        {/* Filter by Status and Priority */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-5">
+          <FilterByStatus tasks={tasks} setFilteredTasks={setFilteredTasks} />
           <p>
-            <span className="font-semibold">
+            <span className="font-semibold text-green-600">
               Completed ({completedTasks?.length})
             </span>
           </p>
-          <FilterByPriority handleFilterPriority={handleFilterPriority} />
+          <p>
+            <span className="font-semibold text-red-600">
+              Incomplete ({incompleteTasks?.length})
+            </span>
+          </p>
+          <FilterByPriority tasks={tasks} setFilteredTasks={setFilteredTasks} />
         </div>
         {filteredTasks.length === 0 ? (
           <p className="text-xl text-center font-bold mt-20">
@@ -117,13 +99,12 @@ const TodoPage = () => {
           </p>
         ) : (
           <TodoList
-            TABLE_HEAD={TABLE_HEAD}
+            columns={columns}
             tasks={filteredTasks}
             setTasks={setTasks}
             handleDelete={handleDelete}
-            handleStatus={handleStatus}
             setIsEditOpen={setIsEditOpen}
-            setTask={setSelectedTask}
+            setSelectedTask={setSelectedTask}
           />
         )}
 
