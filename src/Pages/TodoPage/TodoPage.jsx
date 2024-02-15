@@ -9,7 +9,7 @@ import FilterByPriority from "./components/FilterByPriority";
 const TodoPage = () => {
   // is already tasks in local storage
   const isExistTasks = JSON.parse(localStorage.getItem("tasks"));
-  const [tasks, setTasks] = useState(isExistTasks);
+  const [tasks, setTasks] = useState(isExistTasks || []);
   const [filteredTasks, setFilteredTasks] = useState([]);
 
   const [selectedTask, setSelectedTask] = useState(null);
@@ -29,7 +29,7 @@ const TodoPage = () => {
     if (selectedTask) {
       // Update task
       setTasks((prevTasks) =>
-        prevTasks.map((task) =>
+        prevTasks?.map((task) =>
           task.id === selectedTask.id
             ? { ...task, title: data.title, priority: data.priority }
             : task
@@ -40,10 +40,10 @@ const TodoPage = () => {
     } else {
       // Add task
       const newTask = {
-        id: tasks.length + 1,
-        title: data.title,
+        id: tasks?.length + 1,
+        title: data?.title,
         status: "incomplete",
-        priority: data.priority,
+        priority: data?.priority,
       };
       if (!data?.title || !data?.priority) {
         alert("Please Write Title and Select Priority");
@@ -93,8 +93,8 @@ const TodoPage = () => {
           </p>
           <FilterByPriority tasks={tasks} setFilteredTasks={setFilteredTasks} />
         </div>
-        {filteredTasks.length === 0 ? (
-          <p className="text-xl text-center font-bold mt-20">
+        {filteredTasks?.length === 0 ? (
+          <p className="text-xl text-center font-bold my-10">
             No Todo List Found. Please add new Todo
           </p>
         ) : (

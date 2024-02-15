@@ -57,9 +57,9 @@ const TodoList = ({
             </tr>
           </thead>
           <tbody>
-            {tasks.map((task, index) => {
+            {tasks?.map((task, index) => {
               const { id, title, status, priority } = task;
-              const isLast = index === tasks.length - 1;
+              const isLast = index === tasks?.length - 1;
               const classes = isLast
                 ? "p-4"
                 : "p-4 border-b border-blue-gray-50";

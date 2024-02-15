@@ -1,6 +1,11 @@
 import { array, func } from "prop-types";
 
 const FilterByStatus = ({ setFilteredTasks, tasks }) => {
+  const status = [
+    { value: "completed", label: "Complete" },
+    { value: "incomplete", label: "Incomplete" },
+  ];
+
   // filter with status
   const handleFilterStatus = (e) => {
     const status = e.target.value;
@@ -14,8 +19,11 @@ const FilterByStatus = ({ setFilteredTasks, tasks }) => {
         name="priority"
         onChange={handleFilterStatus}
       >
-        <option value="completed">Completed</option>
-        <option value="incomplete">Incomplete</option>
+        {status.map((status) => (
+          <option key={status.value} value={status.value}>
+            {status.label}
+          </option>
+        ))}
       </select>
     </>
   );

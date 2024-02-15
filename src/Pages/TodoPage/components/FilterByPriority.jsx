@@ -1,6 +1,11 @@
 import { array, func } from "prop-types";
 
 const FilterByPriority = ({ setFilteredTasks, tasks }) => {
+  const priorities = [
+    { value: "low", label: "Low" },
+    { value: "medium", label: "Medium" },
+    { value: "high", label: "High" },
+  ];
   // filter with priority
   const handleFilterPriority = (e) => {
     const priority = e.target.value;
@@ -14,9 +19,11 @@ const FilterByPriority = ({ setFilteredTasks, tasks }) => {
         name="priority"
         onChange={handleFilterPriority}
       >
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
+        {priorities.map((priority) => (
+          <option key={priority.value} value={priority.value}>
+            {priority.label}
+          </option>
+        ))}
       </select>
     </>
   );
